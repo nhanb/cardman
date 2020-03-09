@@ -1,0 +1,19 @@
+# comment: metadata is assigned by =
+RARITY = 3
+
+# html element: anything before : is class, anything after : is content
+atk, sword: 3
+
+desc:
+  p:
+    text: Unearth
+    text: - do something with it:
+  p:
+    text: Unearth
+
+    # comments can be indented
+    # built in function
+    cost: spans(3WW)
+
+    text: - do something with it
+  p: image(url)
