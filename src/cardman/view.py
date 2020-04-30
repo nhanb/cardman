@@ -1,13 +1,6 @@
 from tkinter import HORIZONTAL, VERTICAL, Grid, Text, Tk, ttk
 
-
-class Model:
-    def __init__(self):
-        self.cards = [
-            {"name": "foo.card", "content": "foo"},
-            {"name": "bar.card", "content": "bar"},
-        ]
-        self.templates = ["template1", "template2"]
+from .model import Model
 
 
 class View:
@@ -51,19 +44,3 @@ class View:
         style.theme_use("clam")
         self.model = model
         self.pw = pw
-
-
-class Controller:
-    def __init__(self):
-        self.root = Tk()
-        self.model = Model()
-        self.view = View(self.root, self.model)
-
-    def run(self):
-        self.root.title("Cardman")
-        self.root.mainloop()
-
-
-if __name__ == "__main__":
-    c = Controller()
-    c.run()

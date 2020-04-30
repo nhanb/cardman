@@ -4,6 +4,12 @@ version = "0.1.0"
 description = ""
 authors = ["Bùi Thành Nhân <hi@imnhan.com>"]
 license = "MIT"
+packages = [
+    { include = "cardman", from = "src" },
+]
+
+[tool.poetry.scripts]
+cardman = "cardman:main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
