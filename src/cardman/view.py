@@ -1,4 +1,5 @@
-from tkinter import HORIZONTAL, VERTICAL, Grid, Text, Tk, ttk
+from pathlib import Path
+from tkinter import END, HORIZONTAL, VERTICAL, Grid, Text, Tk, ttk
 
 from .model import Model
 
@@ -7,6 +8,10 @@ class View:
     model: Model
     pw: ttk.PanedWindow
     cards_tree: ttk.Treeview
+    templates_tree: ttk.Treeview
+    text_editor: Text
+    select_card_callback = None
+    select_template_callback = None
 
     def __init__(self, root: Tk, model: Model):
         self.model = model
@@ -23,11 +28,13 @@ class View:
         cards_tree = ttk.Treeview(pw, show="tree", selectmode="browse")
         self.cards_tree = cards_tree
         self.render_card_list()
-        cards_tree.bind("<<TreeviewSelect>>", self.on_select_card)
+        cards_tree.bind("<<TreeviewSelect>>", self._on_select_card)
         pw.add(cards_tree)
 
         # Main text editor
         text_editor = Text(pw)
+        self.text_editor = text_editor
+        text_editor.bind("<Control-a>", self._on_text_ctrl_a)
         pw.add(text_editor)
 
         # Rightmost vertical paned window
@@ -38,7 +45,7 @@ class View:
         templates_tree = ttk.Treeview(vpw, show="tree")
         self.templates_tree = templates_tree
         self.render_template_list()
-        cards_tree.bind("<<TreeviewSelect>>", self.on_select_template)
+        templates_tree.bind("<<TreeviewSelect>>", self._on_select_template)
         vpw.add(templates_tree)
 
         ## Preview
@@ -49,15 +56,27 @@ class View:
         style.theme_use("clam")
 
     def render_card_list(self):
+        self.cards_tree.delete(*self.cards_tree.get_children())
         for card in self.model.cards:
             self.cards_tree.insert("", "end", text=card.parts[-1], iid=card)
 
     def render_template_list(self):
+        self.templates_tree.delete(*self.templates_tree.get_children())
         for template in self.model.templates:
             self.templates_tree.insert("", "end", text=template.parts[-1], iid=template)
 
-    def on_select_card(self, ev):
-        print("selection is", ev.widget.selection())
+    def render_card_content(self):
+        self.text_editor.delete("1.0", END)
+        self.text_editor.insert(END, self.model.card_content.rstrip())
 
-    def on_select_template(self, ev):
-        print("selection is", ev.widget.selection())
+    def _on_select_card(self, ev):
+        if self.select_card_callback is not None:
+            self.select_card_callback(Path(ev.widget.selection()[0]))
+
+    def _on_select_template(self, ev):
+        if self.select_template_callback is not None:
+            self.select_template_callback(Path(ev.widget.selection()[0]))
+
+    def _on_text_ctrl_a(self, ev):
+        self.text_editor.tag_add("sel", "1.0", END)
+        return "break"
