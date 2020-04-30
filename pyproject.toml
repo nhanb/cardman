@@ -12,7 +12,7 @@ packages = [
 cardman = "cardman:main"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 
 [tool.poetry.dev-dependencies]
 python-language-server = "^0.31.10"

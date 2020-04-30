@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from tkinter import END, HORIZONTAL, VERTICAL, Grid, Text, Tk, ttk
 
@@ -19,17 +20,21 @@ class View:
         Grid.rowconfigure(root, 0, weight=1)
         Grid.columnconfigure(root, 0, weight=1)
 
-        # Top-level horizontal PanedWindow
+        # Horizontal PanedWindow
         pw = ttk.PanedWindow(root, orient=HORIZONTAL)
         self.pw = pw
         pw.grid(column=0, row=0, sticky="nesw")
 
         # Card selection
-        cards_tree = ttk.Treeview(pw, show="tree", selectmode="browse")
+        cards_frame = ttk.LabelFrame(pw, text="Cards")
+        pw.add(cards_frame)
+        cards_tree = ttk.Treeview(cards_frame, show="tree", selectmode="browse")
         self.cards_tree = cards_tree
         self.render_card_list()
         cards_tree.bind("<<TreeviewSelect>>", self._on_select_card)
-        pw.add(cards_tree)
+        cards_tree.grid(column=0, row=0, sticky="nesw")
+        Grid.rowconfigure(cards_frame, 0, weight=1)
+        Grid.columnconfigure(cards_frame, 0, weight=1)
 
         # Main text editor
         text_editor = Text(pw)
@@ -42,18 +47,27 @@ class View:
         pw.add(vpw)
 
         ## Template picker
-        templates_tree = ttk.Treeview(vpw, show="tree")
+        templates_frame = ttk.LabelFrame(vpw, text="Templates")
+        vpw.add(templates_frame)
+        templates_tree = ttk.Treeview(templates_frame, show="tree")
+        templates_tree.grid(column=0, row=0, sticky="nsew")
+        Grid.rowconfigure(templates_frame, 0, weight=1)
+        Grid.columnconfigure(templates_frame, 0, weight=1)
         self.templates_tree = templates_tree
         self.render_template_list()
         templates_tree.bind("<<TreeviewSelect>>", self._on_select_template)
-        vpw.add(templates_tree)
 
         ## Preview
-        preview_frame = ttk.LabelFrame(vpw, text="Preview:", height=300, width=300)
+        preview_frame = ttk.LabelFrame(vpw, text="Preview", height=300, width=300)
         vpw.add(preview_frame)
 
         style = ttk.Style()
-        style.theme_use("clam")
+        if sys.platform == "win32":
+            style.theme_use("vista")
+        elif sys.platform == "darwin":
+            style.theme_use("aqua")
+        else:
+            style.theme_use("clam")
 
     def render_card_list(self):
         self.cards_tree.delete(*self.cards_tree.get_children())
