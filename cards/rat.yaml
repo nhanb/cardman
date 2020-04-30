@@ -1,0 +1,28 @@
+# Magic the Gathering example
+# https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=271182
+name: Ink-Eyes, Servant of Oni
+cost: '{4}{Black}{Black}'
+supertype: legendary
+type: creature
+subtypes:
+  - rat
+  - ninja
+
+rarity: rare
+expansion: planechase 2012 edition
+
+text: >
+  Ninjutsu {3}{Black}{Black} ({3}{Black}{Black}, Return an unblocked attacker
+  you control to hand: Put this card onto the battlefield from your hand tapped
+  and attacking.)
+
+  Whenever Ink-Eyes, Servant of Oni deals combat damage to a player, you may
+  put target creature card from that player's graveyard onto the battlefield
+  under your control.
+
+  {1}{Black}: Regenerate Ink-Eyes.
+
+flavortext: ''
+
+power: 5
+toughness: 4

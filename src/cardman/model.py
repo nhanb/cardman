@@ -1,4 +1,7 @@
+import pprint
 from pathlib import Path
+
+import yaml
 
 CARDS_DIR = Path("cards")
 TEMPLATES_DIR = Path("templates")
@@ -14,7 +17,7 @@ class Model:
         self.load_template_list()
 
     def load_card_list(self):
-        self.cards = [p for p in CARDS_DIR.iterdir() if str(p).endswith(".card")]
+        self.cards = [p for p in CARDS_DIR.iterdir() if str(p).endswith(".yaml")]
 
     def load_template_list(self):
         self.templates = [
@@ -27,3 +30,9 @@ class Model:
             return
         with open(path, "r") as cardfile:
             self.card_content = cardfile.read()
+
+    def parse_card_content(self):
+        """Returns True if parsed successfully"""
+        parsed = yaml.safe_load(self.card_content)
+        pprint.pprint(parsed)
+        return type(parsed) is dict

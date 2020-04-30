@@ -21,6 +21,7 @@ class Controller:
     def select_card_callback(self, card: Path):
         self.model.load_card_content(card)
         self.view.render_card_content()
+        self.model.parse_card_content()
 
     def select_template_callback(self, template: Path):
         print("Template is", template)
