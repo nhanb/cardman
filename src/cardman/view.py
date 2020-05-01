@@ -2,6 +2,8 @@ import sys
 from pathlib import Path
 from tkinter import END, HORIZONTAL, VERTICAL, Grid, Text, Tk, ttk
 
+from cefpython3 import cefpython as cef
+
 from .model import Model
 
 
